@@ -62,8 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function checkCollision(obj1, obj2) {
-        const rect1 = obj1.getBoundingClientRect();
-        const rect2 = obj2.getBoundingClientRect();
+        const rect1 = obj1.current.getBoundingClientRect();
+        const rect2 = obj2.current.getBoundingClientRect();
         return !(
             rect1.right < rect2.left ||
             rect1.left > rect2.right ||
