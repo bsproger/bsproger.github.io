@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Steuerung mit Buttons (Touch)
-    document.getElementById("up").addEventListener("click", () => handleMove("ArrowUp"));
-    document.getElementById("down").addEventListener("click", () => handleMove("ArrowDown"));
-    document.getElementById("left").addEventListener("click", () => handleMove("ArrowLeft"));
-    document.getElementById("right").addEventListener("click", () => handleMove("ArrowRight"));
+    document.getElementById("up").addEventListener("touchstart", () => handleMove("ArrowUp"));
+    document.getElementById("down").addEventListener("touchstart", () => handleMove("ArrowDown"));
+    document.getElementById("left").addEventListener("touchstart", () => handleMove("ArrowLeft"));
+    document.getElementById("right").addEventListener("touchstart", () => handleMove("ArrowRight"));
 
     function handleMove(direction) {
         let newX = playerX;
