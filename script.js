@@ -9,10 +9,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const step = 10;
     const gameContainer = document.getElementById("game-container");
 
-    // Steuerung mit Pfeiltasten (für Desktop & Mobile mit Tastatur)
+    // Steuerung mit Tastatur (für Desktop)
     document.addEventListener("keydown", function (event) {
         handleMove(event.key);
     });
+
+    // Steuerung mit Touch-Buttons
+    document.getElementById("up").addEventListener("click", () => handleMove("ArrowUp"));
+    document.getElementById("down").addEventListener("click", () => handleMove("ArrowDown"));
+    document.getElementById("left").addEventListener("click", () => handleMove("ArrowLeft"));
+    document.getElementById("right").addEventListener("click", () => handleMove("ArrowRight"));
 
     function handleMove(direction) {
         let newX = playerX;
