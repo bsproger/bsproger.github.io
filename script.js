@@ -9,11 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const step = 10;
     const gameContainer = document.getElementById("game-container");
 
-    // Steuerung mit Tastatur
-    document.addEventListener("keydown", function (event) {
-        handleMove(event.key);
-    });
-
     // Steuerung mit Buttons (Touch)
     document.getElementById("up").addEventListener("mousedown", () => handleMove("ArrowUp"));
     document.getElementById("down").addEventListener("mousedown", () => handleMove("ArrowDown"));
