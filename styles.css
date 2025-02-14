@@ -1,26 +1,101 @@
 body {
     text-align: center;
     font-family: Arial, sans-serif;
-    background-color: #ffe6e6;
+    background-color: #ffe6f2;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
-    color: #d147a3;
+    color: #d63384;
 }
 
-#gameContainer {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+#game-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background-color: #ffb3d9;
+    margin: auto;
+    border: 3px solid #d63384;
+    overflow: hidden;
+    touch-action: none;
 }
 
-canvas {
-    background-color: #fff;
-    border: 2px solid #d147a3;
+#player, #love {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+#player {
+    background-color: blue;
+    top: 10px;
+    left: 10px;
+}
+
+#love {
+    background-color: red;
+    bottom: 10px;
+    right: 10px;
+}
+
+.obstacle {
+    width: 50px;
+    height: 50px;
+    background-color: brown;
+    position: absolute;
+    border-radius: 10px;
 }
 
 #message {
     font-size: 20px;
-    color: #d147a3;
+    color: green;
     font-weight: bold;
+}
+
+/* Mobile Steuerung */
+#controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #d63384;
+    color: white;
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #a12260;
+}
+
+@media (max-width: 450px) {
+    #game-container {
+        width: 90vw;
+        height: 90vw;
+    }
+    
+    #player, #love {
+        width: 10vw;
+        height: 10vw;
+    }
+
+    .obstacle {
+        width: 12vw;
+        height: 12vw;
+    }
+
+    button {
+        width: 15vw;
+        height: 15vw;
+    }
 }
