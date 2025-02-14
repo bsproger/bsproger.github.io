@@ -6,10 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let playerX = 10;
     let playerY = 10;
-    const step = 10;
-    const gameContainer = document.getElementById("game-container");
+    const step = 40; // Größe eines Schrittes
+    const gridSize = 40; // Ein Emoji hat eine feste Größe von 40px
+    const gameWidth = 400;
+    const gameHeight = 400;
 
-    // Steuerung mit Tastatur (für Desktop)
+    // Steuerung mit Tastatur
     document.addEventListener("keydown", function (event) {
         handleMove(event.key);
     });
@@ -31,44 +33,36 @@ document.addEventListener("DOMContentLoaded", function () {
             case "ArrowRight": newX += step; break;
         }
 
-        updatePosition(newX, newY);
-    }
-
-    function updatePosition(x, y) {
-        if (isValidMove(x, y)) {
-            playerX = x;
-            playerY = y;
+        // Aktualisiere Position nur, wenn es eine gültige Bewegung ist
+        if (isValidMove(newX, newY)) {
+            playerX = newX;
+            playerY = newY;
             player.style.left = playerX + "px";
             player.style.top = playerY + "px";
         }
 
-        if (checkCollision(player, love)) {
+        // Prüfen, ob sich die Tauben getroffen haben
+        if (playerX === parseInt(love.style.left) && playerY === parseInt(love.style.top)) {
             message.textContent = "Die Tauben haben sich gefunden! 💕";
-            player.textContent = "💑";  // Wechselt zu verliebten Tauben
+            player.textContent = "💑";  // Ändert das Emoji zu verliebten Tauben
         }
     }
 
     function isValidMove(x, y) {
-        if (x < 0 || y < 0 || x > (gameContainer.clientWidth - player.clientWidth) || y > (gameContainer.clientHeight - player.clientHeight)) {
+        // Begrenzung des Spielfelds
+        if (x < 0 || y < 0 || x >= gameWidth || y >= gameHeight) {
             return false;
         }
 
+        // Kollision mit Hindernissen prüfen
         for (let obstacle of obstacles) {
-            if (checkCollision({ offsetLeft: x, offsetTop: y, offsetWidth: player.clientWidth, offsetHeight: player.clientHeight }, obstacle)) {
+            let obsX = parseInt(obstacle.style.left);
+            let obsY = parseInt(obstacle.style.top);
+
+            if (x === obsX && y === obsY) {
                 return false;
             }
         }
         return true;
-    }
-
-    function checkCollision(obj1, obj2) {
-        const rect1 = obj1.getBoundingClientRect();
-        const rect2 = obj2.getBoundingClientRect();
-        return !(
-            rect1.right < rect2.left ||
-            rect1.left > rect2.right ||
-            rect1.bottom < rect2.top ||
-            rect1.top > rect2.bottom
-        );
     }
 });
