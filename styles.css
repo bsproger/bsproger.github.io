@@ -10,21 +10,6 @@ h1 {
     color: #d63384;
 }
 
-button {
-    font-size: 18px;
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #d63384;
-    color: white;
-    cursor: pointer;
-}
-
-button:active {
-    background-color: #a12260;
-}
-
 #game-container {
     position: relative;
     width: 400px;
@@ -69,7 +54,7 @@ button:active {
     font-weight: bold;
 }
 
-/* Anpassung für kleinere Geräte */
+/* Anpassung für mobile Geräte */
 @media (max-width: 450px) {
     #game-container {
         width: 90vw;
