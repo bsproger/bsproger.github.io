@@ -49,26 +49,41 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function isValidMove(x, y) {
+        // Spielfeldgrenzen prüfen
         if (x < 0 || y < 0 || x > (gameContainer.clientWidth - player.clientWidth) || y > (gameContainer.clientHeight - player.clientHeight)) {
             return false;
         }
 
+        // Kollision mit Hindernissen prüfen
         for (let obstacle of obstacles) {
-            if (checkCollision({ offsetLeft: x, offsetTop: y, offsetWidth: player.clientWidth, offsetHeight: player.clientHeight }, obstacle)) {
+            if (checkCollisionObject(player, obstacle, x, y)) {
                 return false;
             }
         }
         return true;
     }
 
-    function checkCollision(obj1, obj2) {
-        const rect1 = obj1.current.getBoundingClientRect();
-        const rect2 = obj2.current.getBoundingClientRect();
+    function checkCollisionObject(obj1, obj2, x, y) {
+        // Position und Größe manuell berechnen
+        let obj1X = x;
+        let obj1Y = y;
+        let obj1Width = obj1.clientWidth;
+        let obj1Height = obj1.clientHeight;
+
+        let obj2X = obj2.offsetLeft;
+        let obj2Y = obj2.offsetTop;
+        let obj2Width = obj2.clientWidth;
+        let obj2Height = obj2.clientHeight;
+
         return !(
-            rect1.right < rect2.left ||
-            rect1.left > rect2.right ||
-            rect1.bottom < rect2.top ||
-            rect1.top > rect2.bottom
+            obj1X + obj1Width < obj2X ||  // Links vorbei
+            obj1X > obj2X + obj2Width ||  // Rechts vorbei
+            obj1Y + obj1Height < obj2Y || // Oben vorbei
+            obj1Y > obj2Y + obj2Height    // Unten vorbei
         );
+    }
+
+    function checkCollision(obj1, obj2) {
+        return checkCollisionObject(obj1, obj2, obj1.offsetLeft, obj1.offsetTop);
     }
 });
