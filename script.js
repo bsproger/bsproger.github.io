@@ -6,10 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let playerX = 10;
     let playerY = 10;
-    const step = 40; // Größe eines Schrittes
-    const gridSize = 40; // Ein Emoji hat eine feste Größe von 40px
-    const gameWidth = 400;
-    const gameHeight = 400;
+    const step = 40; // Rastergröße für präzise Bewegung
 
     // Steuerung mit Tastatur
     document.addEventListener("keydown", function (event) {
@@ -33,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
             case "ArrowRight": newX += step; break;
         }
 
-        // Aktualisiere Position nur, wenn es eine gültige Bewegung ist
         if (isValidMove(newX, newY)) {
             playerX = newX;
             playerY = newY;
@@ -41,28 +37,35 @@ document.addEventListener("DOMContentLoaded", function () {
             player.style.top = playerY + "px";
         }
 
-        // Prüfen, ob sich die Tauben getroffen haben
-        if (playerX === parseInt(love.style.left) && playerY === parseInt(love.style.top)) {
+        if (checkCollision(player, love)) {
             message.textContent = "Die Tauben haben sich gefunden! 💕";
-            player.textContent = "💑";  // Ändert das Emoji zu verliebten Tauben
+            player.textContent = "💑"; // Wechselt das Emoji zu verliebten Tauben
         }
     }
 
     function isValidMove(x, y) {
-        // Begrenzung des Spielfelds
-        if (x < 0 || y < 0 || x >= gameWidth || y >= gameHeight) {
+        const gameContainer = document.getElementById("game-container");
+
+        // Spielfeldbegrenzung prüfen
+        if (x < 0 || y < 0 || x >= gameContainer.clientWidth || y >= gameContainer.clientHeight) {
             return false;
         }
 
-        // Kollision mit Hindernissen prüfen
+        // Hindernis-Kollision prüfen
         for (let obstacle of obstacles) {
-            let obsX = parseInt(obstacle.style.left);
-            let obsY = parseInt(obstacle.style.top);
-
-            if (x === obsX && y === obsY) {
+            if (checkCollision({ offsetLeft: x, offsetTop: y, offsetWidth: step, offsetHeight: step }, obstacle)) {
                 return false;
             }
         }
         return true;
+    }
+
+    function checkCollision(obj1, obj2) {
+        return (
+            obj1.offsetLeft < obj2.offsetLeft + obj2.offsetWidth &&
+            obj1.offsetLeft + obj1.offsetWidth > obj2.offsetLeft &&
+            obj1.offsetTop < obj2.offsetTop + obj2.offsetHeight &&
+            obj1.offsetTop + obj1.offsetHeight > obj2.offsetTop
+        );
     }
 });
