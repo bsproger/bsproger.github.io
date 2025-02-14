@@ -3,40 +3,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const love = document.getElementById("love");
     const obstacles = document.querySelectorAll(".obstacle");
     const message = document.getElementById("message");
+    const startGyroButton = document.getElementById("startGyro");
 
     let playerX = 10;
     let playerY = 10;
-    const step = 10;
+    const step = 5; // Kleinere Schritte für sanfte Bewegung
     const gameContainer = document.getElementById("game-container");
 
-    // Steuerung mit Buttons (Touch)
-    document.getElementById("up").addEventListener("mousedown", () => handleMove("ArrowUp"));
-    document.getElementById("down").addEventListener("mousedown", () => handleMove("ArrowDown"));
-    document.getElementById("left").addEventListener("mousedown", () => handleMove("ArrowLeft"));
-    document.getElementById("right").addEventListener("mousedown", () => handleMove("ArrowRight"));
+    let gyroEnabled = false;
+
+    // Steuerung mit Tastatur (Fallback für Desktop)
+    document.addEventListener("keydown", function (event) {
+        handleMove(event.key);
+    });
 
     function handleMove(direction) {
         let newX = playerX;
         let newY = playerY;
 
         switch (direction) {
-            case "ArrowUp":
-                newY -= step;
-                break;
-            case "ArrowDown":
-                newY += step;
-                break;
-            case "ArrowLeft":
-                newX -= step;
-                break;
-            case "ArrowRight":
-                newX += step;
-                break;
+            case "ArrowUp": newY -= step; break;
+            case "ArrowDown": newY += step; break;
+            case "ArrowLeft": newX -= step; break;
+            case "ArrowRight": newX += step; break;
         }
 
-        if (isValidMove(newX, newY)) {
-            playerX = newX;
-            playerY = newY;
+        updatePosition(newX, newY);
+    }
+
+    function updatePosition(x, y) {
+        if (isValidMove(x, y)) {
+            playerX = x;
+            playerY = y;
             player.style.left = playerX + "px";
             player.style.top = playerY + "px";
         }
@@ -69,5 +67,46 @@ document.addEventListener("DOMContentLoaded", function () {
             rect1.bottom < rect2.top ||
             rect1.top > rect2.bottom
         );
+    }
+
+    // Gyroskop aktivieren
+    startGyroButton.addEventListener("click", function () {
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+            DeviceOrientationEvent.requestPermission().then((permissionState) => {
+                if (permissionState === "granted") {
+                    gyroEnabled = true;
+                    window.addEventListener("deviceorientation", handleGyro);
+                    startGyroButton.style.display = "none";
+                } else {
+                    alert("Gyroskop-Zugriff verweigert!");
+                }
+            }).catch(console.error);
+        } else {
+            alert("Dieses Gerät unterstützt kein Gyroskop oder es wird automatisch aktiviert.");
+            gyroEnabled = true;
+            window.addEventListener("deviceorientation", handleGyro);
+            startGyroButton.style.display = "none";
+        }
+    });
+
+    function handleGyro(event) {
+        if (!gyroEnabled) return;
+
+        let x = event.gamma; // Links-Rechts-Kippen
+        let y = event.beta;  // Vor-Zurück-Kippen
+
+        if (x > 5) {
+            playerX += step;
+        } else if (x < -5) {
+            playerX -= step;
+        }
+
+        if (y > 5) {
+            playerY += step;
+        } else if (y < -5) {
+            playerY -= step;
+        }
+
+        updatePosition(playerX, playerY);
     }
 });
