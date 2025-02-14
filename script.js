@@ -3,16 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const love = document.getElementById("love");
     const obstacles = document.querySelectorAll(".obstacle");
     const message = document.getElementById("message");
-    const startGyroButton = document.getElementById("startGyro");
 
     let playerX = 10;
     let playerY = 10;
-    const step = 5; // Kleinere Schritte für sanfte Bewegung
+    const step = 10;
     const gameContainer = document.getElementById("game-container");
 
-    let gyroEnabled = false;
-
-    // Steuerung mit Tastatur (Fallback für Desktop)
+    // Steuerung mit Pfeiltasten (für Desktop & Mobile mit Tastatur)
     document.addEventListener("keydown", function (event) {
         handleMove(event.key);
     });
@@ -67,46 +64,5 @@ document.addEventListener("DOMContentLoaded", function () {
             rect1.bottom < rect2.top ||
             rect1.top > rect2.bottom
         );
-    }
-
-    // Gyroskop aktivieren
-    startGyroButton.addEventListener("click", function () {
-        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
-            DeviceOrientationEvent.requestPermission().then((permissionState) => {
-                if (permissionState === "granted") {
-                    gyroEnabled = true;
-                    window.addEventListener("deviceorientation", handleGyro);
-                    startGyroButton.style.display = "none";
-                } else {
-                    alert("Gyroskop-Zugriff verweigert!");
-                }
-            }).catch(console.error);
-        } else {
-            alert("Dieses Gerät unterstützt kein Gyroskop oder es wird automatisch aktiviert.");
-            gyroEnabled = true;
-            window.addEventListener("deviceorientation", handleGyro);
-            startGyroButton.style.display = "none";
-        }
-    });
-
-    function handleGyro(event) {
-        if (!gyroEnabled) return;
-
-        let x = event.gamma; // Links-Rechts-Kippen
-        let y = event.beta;  // Vor-Zurück-Kippen
-
-        if (x > 5) {
-            playerX += step;
-        } else if (x < -5) {
-            playerX -= step;
-        }
-
-        if (y > 5) {
-            playerY += step;
-        } else if (y < -5) {
-            playerY -= step;
-        }
-
-        updatePosition(playerX, playerY);
     }
 });
