@@ -9,11 +9,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const step = 10;
     const gameContainer = document.getElementById("game-container");
 
+    // Steuerung mit Tastatur
     document.addEventListener("keydown", function (event) {
+        handleMove(event.key);
+    });
+
+    // Steuerung mit Buttons (Touch)
+    document.getElementById("up").addEventListener("click", () => handleMove("ArrowUp"));
+    document.getElementById("down").addEventListener("click", () => handleMove("ArrowDown"));
+    document.getElementById("left").addEventListener("click", () => handleMove("ArrowLeft"));
+    document.getElementById("right").addEventListener("click", () => handleMove("ArrowRight"));
+
+    function handleMove(direction) {
         let newX = playerX;
         let newY = playerY;
 
-        switch (event.key) {
+        switch (direction) {
             case "ArrowUp":
                 newY -= step;
                 break;
@@ -39,13 +50,15 @@ document.addEventListener("DOMContentLoaded", function () {
             message.textContent = "Ihr habt euch gefunden! ❤️";
             player.style.backgroundColor = "purple";
         }
-    });
+    }
 
     function isValidMove(x, y) {
-        if (x < 0 || y < 0 || x > 360 || y > 360) return false;
+        if (x < 0 || y < 0 || x > (gameContainer.clientWidth - player.clientWidth) || y > (gameContainer.clientHeight - player.clientHeight)) {
+            return false;
+        }
 
         for (let obstacle of obstacles) {
-            if (checkCollision({ offsetLeft: x, offsetTop: y, offsetWidth: 40, offsetHeight: 40 }, obstacle)) {
+            if (checkCollision({ offsetLeft: x, offsetTop: y, offsetWidth: player.clientWidth, offsetHeight: player.clientHeight }, obstacle)) {
                 return false;
             }
         }
