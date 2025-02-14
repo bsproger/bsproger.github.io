@@ -54,6 +54,26 @@ h1 {
     font-weight: bold;
 }
 
+/* Steuerung */
+#controls {
+    margin-top: 20px;
+}
+
+#controls button {
+    font-size: 24px;
+    padding: 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #d63384;
+    color: white;
+    cursor: pointer;
+}
+
+#controls button:active {
+    background-color: #a12260;
+}
+
 /* Anpassung für mobile Geräte */
 @media (max-width: 450px) {
     #game-container {
@@ -69,5 +89,10 @@ h1 {
     .obstacle {
         width: 12vw;
         height: 12vw;
+    }
+
+    #controls button {
+        font-size: 18px;
+        padding: 10px;
     }
 }
