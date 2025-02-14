@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #ffe6e6;
+}
+
+h1 {
+    color: #d147a3;
+}
+
+#gameContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+canvas {
+    background-color: #fff;
+    border: 2px solid #d147a3;
+}
+
+#message {
+    font-size: 20px;
+    color: #d147a3;
+    font-weight: bold;
+}
